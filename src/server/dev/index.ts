@@ -2,8 +2,8 @@ import { OutputChannel, workspace, Disposable } from 'coc.nvim';
 import os from 'os';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 
-import { getFlutterWorkspaceFolder } from '../../util/fs';
-import { lineBreak, devLogName } from '../../util/constant';
+import { getRNWorkspaceFolder } from '../../util/fs';
+import { lineBreak } from '../../util/constant';
 import { logger } from '../../util/logger';
 import { notification } from '../../lib/notification';
 import { Dispose } from '../../util/dispose';
@@ -18,7 +18,6 @@ class DevServer extends Dispose {
   private outputChannel: OutputChannel | undefined;
   private task: ChildProcessWithoutNullStreams | undefined;
   private onHandler: callback[] = [];
-  private isAutoScroll = false;
 
   constructor() {
     super();
@@ -58,17 +57,17 @@ class DevServer extends Dispose {
 
   async start(args: string[]): Promise<boolean> {
     if (this.task && this.task.stdin.writable) {
-      notification.show('Flutter dev server is running!');
+      notification.show('React Native packager is running!');
       return false;
     }
-    const workspaceFolder = await getFlutterWorkspaceFolder();
+    const workspaceFolder = await getRNWorkspaceFolder();
     if (!workspaceFolder) {
-      notification.show('Flutter project workspaceFolder not found!');
+      notification.show('React Native project workspaceFolder not found!');
       return false;
     }
 
     log(`server start at: ${workspaceFolder}`);
-    notification.show('Start flutter dev server...');
+    notification.show('Start react-native packager...');
 
     this.stdoutOutput = '';
     this.stderrOutput = '';
@@ -79,7 +78,7 @@ class DevServer extends Dispose {
       this.outputChannel = logger.devOutchannel;
     }
 
-    this.task = spawn('flutter', args, {
+    this.task = spawn('react-native', args, {
       cwd: workspaceFolder,
       detached: false,
       shell: os.platform() === 'win32' ? true : undefined,
@@ -172,87 +171,8 @@ class DevServer extends Dispose {
     if (this.task && this.task.stdin.writable) {
       this.task.stdin.write(cmd);
     } else {
-      notification.show('Flutter server is not running!');
+      notification.show('React Native packager is not running!');
     }
-  }
-
-  async openDevLog() {
-    const config = workspace.getConfiguration('flutter');
-    const cmd = config.get<string>('openDevLogSplitCommand', '');
-    if (this.outputChannel) {
-      if (!cmd) {
-        this.outputChannel.show();
-      } else {
-        const win = await workspace.nvim.window;
-        await workspace.nvim.command(`${cmd} output:///${devLogName}`);
-        workspace.nvim.call('win_gotoid', [win.id]);
-      }
-    }
-    setTimeout(() => {
-      this.autoScrollLogWin();
-    }, 1000);
-  }
-
-  async autoScrollLogWin() {
-    if (this.isAutoScroll) {
-      return;
-    }
-    this.isAutoScroll = true;
-    const buffers = await workspace.nvim.buffers;
-    for (const buf of buffers) {
-      const name = await buf.name;
-      log(`bufName ${name}`);
-      if (name === `output:///${devLogName}`) {
-        const isAttach = await buf.attach(false);
-        if (!isAttach) {
-          log(`Attach buf ${name} error`);
-          this.isAutoScroll = false;
-          return;
-        }
-        this.isAutoScroll = true;
-        buf.listen('lines', async () => {
-          const wins = await workspace.nvim.windows;
-          if (!wins || !wins.length) {
-            return;
-          }
-          for (const win of wins) {
-            const b = await win.buffer;
-            const name = await b.name;
-            if (name === `output:///${devLogName}`) {
-              const lines = await buf.length;
-              const curWin = await workspace.nvim.window;
-              // do not scroll when log win get focus
-              if (win.id === curWin.id) {
-                return;
-              }
-              win.setCursor([lines, 0]);
-              break;
-            }
-          }
-        });
-        buf.listen('detach', () => {
-          if (this.isAutoScroll) {
-            log(`Unexpected detach buf ${name}`);
-            this.isAutoScroll = false;
-          }
-        });
-        this.push(
-          Disposable.create(() => {
-            if (this.isAutoScroll) {
-              this.isAutoScroll = false;
-              try {
-                buf.removeAllListeners();
-                buf.detach();
-              } catch (error) {
-                log(`Detach error ${error.message || error}`);
-              }
-            }
-          }),
-        );
-        break;
-      }
-    }
-    this.isAutoScroll = false;
   }
 }
 

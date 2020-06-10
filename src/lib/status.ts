@@ -24,8 +24,8 @@ class StatusBar extends Dispose {
         callback: async () => {
           if (this.isLSPReady) {
             const doc = await workspace.document;
-            if (doc.filetype === 'dart') {
-              this.show('flutter');
+            if (doc.filetype === 'javascript') {
+              this.show('react-native');
             } else {
               this.hide();
             }

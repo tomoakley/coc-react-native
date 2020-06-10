@@ -2,12 +2,8 @@ import { commands, workspace } from 'coc.nvim';
 
 import { Dispose } from '../util/dispose';
 import { cmdPrefix } from '../util/constant';
-import { execCommand, getFlutterWorkspaceFolder } from '../util/fs';
+import { execCommand } from '../util/fs';
 import { logger } from '../util/logger';
-import { notification } from '../lib/notification';
-import { formatMessage } from '../util';
-
-const log = logger.getlog('global-commands');
 
 interface GCmd {
   name?: string;
@@ -26,7 +22,7 @@ const getCmd = () => {
     if (inputArgs.length) {
       args = args.concat(inputArgs);
     }
-    const { err, stdout, stderr } = await execCommand(`flutter ${cmd} ${args.join(' ')}`);
+    const { err, stdout, stderr } = await execCommand(`react-native ${cmd} ${args.join(' ')}`);
     const devLog = logger.devOutchannel;
     if (stdout) {
       devLog.append(`\n${stdout}\n`);
@@ -43,55 +39,9 @@ const getCmd = () => {
 
 const cmds: GCmd[] = [
   {
-    cmd: 'upgrade',
-    desc: 'flutter upgrade',
+    cmd: 'start',
+    desc: 'react-native start',
     execute: getCmd(),
-  },
-  {
-    cmd: 'doctor',
-    desc: 'flutter doctor',
-    execute: getCmd(),
-  },
-  {
-    cmd: 'create',
-    desc: 'flutter create',
-    execute: getCmd(),
-    getArgs: async (): Promise<string[]> => {
-      const params = await workspace.requestInput('Input project name and other params: ');
-      return params.split(' ');
-    },
-  },
-  {
-    cmd: 'pub get',
-    name: 'pub.get',
-    desc: 'flutter pub get',
-    execute: async (): Promise<void> => {
-      const workspaceFolder = await getFlutterWorkspaceFolder();
-      log(`pub get command, workspace: ${workspaceFolder}`);
-      if (!workspaceFolder) {
-        notification.show('Flutter project workspaceFolder not found!');
-        return;
-      }
-      const { code, err, stdout, stderr } = await execCommand('flutter pub get', { cwd: workspaceFolder });
-      notification.show(formatMessage(stdout));
-      if (err || code) {
-        notification.show(formatMessage(stderr));
-      }
-    },
-  },
-  {
-    cmd: 'devices',
-    desc: 'open devices list',
-    execute: async (): Promise<void> => {
-      workspace.nvim.command('CocList FlutterDevices');
-    },
-  },
-  {
-    cmd: 'emulators',
-    desc: 'open emulators list',
-    execute: async (): Promise<void> => {
-      workspace.nvim.command('CocList FlutterEmulators');
-    },
   },
 ];
 

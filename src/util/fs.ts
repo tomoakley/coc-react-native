@@ -36,8 +36,8 @@ export const findWorkspaceFolder = async (cwd: string, patterns: string[]): Prom
   return closestPath(await findWorkspaceFolders(cwd, patterns));
 };
 
-export const getFlutterWorkspaceFolder = async (): Promise<string | undefined> => {
-  return await findWorkspaceFolder(Uri.parse(workspace.workspaceFolder.uri).fsPath, ['**/pubspec.yaml']);
+export const getRNWorkspaceFolder = async (): Promise<string | undefined> => {
+  return await findWorkspaceFolder(Uri.parse(workspace.workspaceFolder.uri).fsPath, ['**/app.json']);
 };
 
 export const execCommand = (

@@ -12,7 +12,7 @@ class Logger extends Dispose {
   init(level: logLevel) {
     this._traceServer = level;
     if (this._traceServer !== 'off') {
-      this._outchannel = workspace.createOutputChannel('flutter');
+      this._outchannel = workspace.createOutputChannel('react-native');
       this.push(this._outchannel);
     }
     const subscription = workspace.registerAutocmd({

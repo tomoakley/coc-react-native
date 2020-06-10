@@ -1,14 +1,20 @@
 # coc-react-native
 
-React Native support for (Neo)vim
+React Native support for (neo)vim. The plan is to iteratively add features that are in [react-native-tools](https://github.com/Microsoft/vscode-react-native); the list below is a vague feature list in order of prioritisation (which will probably change).
+
+Disclaimer: I've never written a coc plugin before - I'm a React Native / TS / JS developer, and use vim (with coc) daily. I'm basically learning as I go. I just realised that there was no equivalent to react-native-tools for vim, so I'm scratching my own itch and doing it myself. Once I've figured out how to start the packager from within vim, I will integrate this into my .vimrc and dogfood it.
 
 ## Features
 
 - Start packager
-- Enter debug mode
 - Show dev menu
-- Enable inspector
+- Toggle debug mode
+- Toggle inspector
+- Toggle performance monitor
 - Reload JS
+- Possibly add in some Reactotron features, e.g storybook toggle
+- Debugger support (perhaps vimspector)
+- Screenshotting, record video
 
 ## Install
 
@@ -21,9 +27,7 @@ Open React Native only commands list: `CocList --input=rn commands`
 **Global Commands**:
 Note: none of these exist yet. All are very likely to change/be removed.
 
-- `rn.run` Run flutter dev server
-- `rn.create` Create flutter project using: `flutter create`
-- `rn.doctor` Run: `flutter doctor`
+- `rn.start`: Start React Native packager
 - `rn.ios`: Build and run app for iOS
 - `rn.android`: Build and run app for Android
 - `rn.emulators`: List Android emulators
