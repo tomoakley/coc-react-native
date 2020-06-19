@@ -1,5 +1,5 @@
 export const lineBreak = /\r?\n/;
 
-export const cmdPrefix = 'react-native';
+export const cmdPrefix = 'rn';
 
 export const devLogName = 'react-native-dev';
