@@ -29,9 +29,17 @@ export class Dev extends Dispose {
 
   constructor() {
     super();
-    ['start', 'attach'].forEach(cmd => {
+    ['start'].forEach(cmd => {
       const cmdId = `${cmdPrefix}.${cmd}`;
-      this.push(commands.registerCommand(cmdId, this[`${cmd}Server`], this));
+      this.push(
+        commands.registerCommand(
+          cmdId,
+          (...args: string[]) => {
+            this.execute(cmd, args);
+          },
+          this,
+        ),
+      );
       this.push(
         (function() {
           commands.titles.set(cmdId, `${cmd} react native packager`);
@@ -45,14 +53,6 @@ export class Dev extends Dispose {
     });
     this.push(devServer);
     log('register dev command');
-  }
-
-  runServer(...args: string[]) {
-    this.execute('run', args);
-  }
-
-  attachServer(...args: string[]) {
-    this.execute('attach', args);
   }
 
   private async execute(cmd: string, args: string[]) {
