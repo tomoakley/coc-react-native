@@ -21,6 +21,14 @@ export const cmds: Record<string, DCmd> = {
     cmd: 'r',
     desc: 'Reload',
   },
+  openDevLog: {
+    desc: 'Open React Native console',
+    callback: () => {
+      if (devServer.state) {
+        devServer.openDevLog();
+      }
+    },
+  },
 };
 
 export class Dev extends Dispose {
