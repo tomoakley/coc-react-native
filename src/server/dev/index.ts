@@ -57,10 +57,6 @@ class DevServer extends Dispose {
   }
 
   async start(args: string[]): Promise<boolean> {
-    if (this.task && this.task.stdin.writable) {
-      notification.show('React Native packager is running!');
-      return false;
-    }
     const workspaceFolder = await getRNWorkspaceFolder();
     if (!workspaceFolder) {
       notification.show('React Native project workspaceFolder not found!');
@@ -68,7 +64,7 @@ class DevServer extends Dispose {
     }
 
     log(`server start at: ${workspaceFolder}`);
-    notification.show('Start react-native packager...');
+    notification.show(`${this.task && this.task.stdin.writable ? 'Res' : 'S'}tarting the React Native packager...`);
 
     this.stdoutOutput = '';
     this.stderrOutput = '';
@@ -103,7 +99,11 @@ class DevServer extends Dispose {
       } else {
         const win = await workspace.nvim.window;
         await workspace.nvim.command(`${cmd} output:///${devLogName}`);
-        workspace.nvim.call('win_gotoid', [win.id]);
+        if (workspace.nvim.call('win_gotoid', [win.id])) {
+          workspace.nvim.command('hide');
+        }
+        workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
+        workspace.nvim.command('setlocal nobuflisted');
       }
     }
     setTimeout(() => {

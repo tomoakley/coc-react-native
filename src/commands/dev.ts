@@ -21,8 +21,8 @@ export const cmds: Record<string, DCmd> = {
     cmd: 'r',
     desc: 'Reload',
   },
-  openDevLog: {
-    desc: 'Open React Native console',
+  toggleConsole: {
+    desc: 'Hide / show the React Native console',
     callback: () => {
       if (devServer.state) {
         devServer.openDevLog();
@@ -50,7 +50,7 @@ export class Dev extends Dispose {
       );
       this.push(
         (function() {
-          commands.titles.set(cmdId, `${cmd} react native packager`);
+          commands.titles.set(cmdId, `${cmd} React Native packager`);
           return {
             dispose() {
               commands.titles.delete(cmdId);
