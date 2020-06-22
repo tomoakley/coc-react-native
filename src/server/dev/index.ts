@@ -76,7 +76,6 @@ class DevServer extends Dispose {
     notification.show(`Starting the React Native packager...`);
 
     this.stdoutOutput = '';
-    this.stderrOutput = '';
 
     if (this.outputChannel) {
       this.outputChannel.clear();
@@ -107,11 +106,12 @@ class DevServer extends Dispose {
         this.outputChannel.show();
       } else {
         const win = await workspace.nvim.window;
-        await workspace.nvim.command(`${cmd} output:///${devLogName}`);
+        //await workspace.nvim.command(`${cmd} output:///${devLogName}`);
         if (workspace.nvim.call('win_gotoid', [win.id])) {
           workspace.nvim.command('hide');
+        } else {
+          workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
         }
-        workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
         workspace.nvim.command('setlocal nobuflisted');
       }
     }
