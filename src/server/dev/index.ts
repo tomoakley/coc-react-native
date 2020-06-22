@@ -108,6 +108,7 @@ class DevServer extends Dispose {
         const win = await workspace.nvim.window;
         await workspace.nvim.command(`${cmd} output:///${devLogName}`);
         workspace.nvim.call('win_gotoid', [win.id]);
+        notification.show(`Command: ${cmd}`);
       }
     }
     setTimeout(() => {
