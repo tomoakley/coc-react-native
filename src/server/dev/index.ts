@@ -56,7 +56,16 @@ class DevServer extends Dispose {
     return !!this.task && this.task.stdin.writable;
   }
 
+  async stop(): Promise<boolean> {
+    if (this.task && this.task.stdin.writable) {
+      this.task.stdin.write('stop\n');
+      notification.show('React Native packager stopped.');
+    }
+    return Promise.resolve(true);
+  }
+
   async start(args: string[]): Promise<boolean> {
+    await this.stop();
     const workspaceFolder = await getRNWorkspaceFolder();
     if (!workspaceFolder) {
       notification.show('React Native project workspaceFolder not found!');
@@ -64,7 +73,7 @@ class DevServer extends Dispose {
     }
 
     log(`server start at: ${workspaceFolder}`);
-    notification.show(`${this.task && this.task.stdin.writable ? 'Res' : 'S'}tarting the React Native packager...`);
+    notification.show(`Starting the React Native packager...`);
 
     this.stdoutOutput = '';
     this.stderrOutput = '';
