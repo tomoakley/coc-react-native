@@ -99,21 +99,18 @@ class DevServer extends Dispose {
   }
 
   async openDevLog() {
-    const config = workspace.getConfiguration('react-native');
-    const cmd = config.get<string>('openDevLogSplitCommand', '');
+    //const config = workspace.getConfiguration('react-native');
+    // const cmd = config.get<string>('openDevLogSplitCommand', '');
     if (this.outputChannel) {
-      if (!cmd) {
-        this.outputChannel.show();
+      const win = await workspace.nvim.window;
+      if (workspace.nvim.call('win_gotoid', [win.id])) {
+        this.outputChannel.hide();
       } else {
-        const win = await workspace.nvim.window;
-        //await workspace.nvim.command(`${cmd} output:///${devLogName}`);
-        if (workspace.nvim.call('win_gotoid', [win.id])) {
-          workspace.nvim.command('hide');
-        } else {
-          workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
-        }
-        workspace.nvim.command('setlocal nobuflisted');
+        //this.outputChannel.show();
+        workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
       }
+      workspace.nvim.command('setlocal nobuflisted');
+      //await workspace.nvim.command(`${cmd} output:///${devLogName}`);
     }
     setTimeout(() => {
       this.autoScrollLogWin();
