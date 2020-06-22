@@ -106,8 +106,8 @@ class DevServer extends Dispose {
       if (workspace.nvim.call('win_gotoid', [win.id])) {
         this.outputChannel.hide();
       } else {
-        //this.outputChannel.show();
-        workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
+        this.outputChannel.show();
+        //workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
       }
       workspace.nvim.command('setlocal nobuflisted');
       //await workspace.nvim.command(`${cmd} output:///${devLogName}`);
