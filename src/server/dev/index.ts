@@ -102,19 +102,13 @@ class DevServer extends Dispose {
     const config = workspace.getConfiguration('react-native');
     const cmd = config.get<string>('openDevLogSplitCommand', '');
     if (this.outputChannel) {
-      const win = await workspace.nvim.window;
-      if (workspace.nvim.call('win_gotoid', [win.id])) {
-        this.outputChannel.hide();
+      if (!cmd) {
+        this.outputChannel.show();
       } else {
-        if (!cmd) {
-          this.outputChannel.show();
-        } else {
-          await workspace.nvim.command(`${cmd} output:///${devLogName}`);
-          notification.show(`Command: ${cmd}`);
-        }
-        //workspace.nvim.call('execute', [`botright sbuffer ${win.id}`]);
+        const win = await workspace.nvim.window;
+        await workspace.nvim.command(`${cmd} output:///${devLogName}`);
+        workspace.nvim.call('win_gotoid', [win.id]);
       }
-      workspace.nvim.command('setlocal nobuflisted');
     }
     setTimeout(() => {
       this.autoScrollLogWin();
