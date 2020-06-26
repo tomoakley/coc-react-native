@@ -19,6 +19,7 @@ class DevServer extends Dispose {
   private task: ChildProcessWithoutNullStreams | undefined;
   private onHandler: callback[] = [];
   private isAutoScroll = false;
+  private consoleVisible = false;
 
   constructor() {
     super();
@@ -107,7 +108,7 @@ class DevServer extends Dispose {
       } else {
         const win = await workspace.nvim.window;
         if (workspace.nvim.call('win_gotoid', [win.id])) {
-          await workspace.nvim.command('hide');
+          this.outputChannel.hide();
         } else {
           await workspace.nvim.command(`${cmd} output:///${devLogName}`);
         }
