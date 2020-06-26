@@ -103,14 +103,15 @@ class DevServer extends Dispose {
     //const config = workspace.getConfiguration('react-native');
     // const cmd = config.get<string>('openDevLogSplitCommand', '');
     if (this.outputChannel) {
+      const { nvim } = workspace;
       if (this.consoleVisible) {
-        this.outputChannel.hide();
+        const win = await nvim.window;
+        nvim.call('win_gotoid', [win.id]);
+        nvim.command('hide');
         this.consoleVisible = false;
       } else {
         this.outputChannel.show();
-        //const win = await workspace.nvim.window;
         //await workspace.nvim.command(`botright sb output:///${devLogName}`);
-        //workspace.nvim.call('win_gotoid', [win.id]);
         this.consoleVisible = true;
       }
     }
