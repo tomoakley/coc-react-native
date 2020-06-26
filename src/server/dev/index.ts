@@ -110,8 +110,10 @@ class DevServer extends Dispose {
         await nvim.command('hide');
         this.consoleVisible = false;
       } else {
-        await workspace.nvim.command(`botright sb output:///${devLogName}`);
+        this.outputChannel.show();
+        //await workspace.nvim.command(`botright sb output:///${devLogName}`);
         await nvim.call('win_gotoid', [win.id]);
+        await nvim.command('setlocal nobuflisted');
         this.consoleVisible = true;
       }
     }
