@@ -105,12 +105,16 @@ class DevServer extends Dispose {
     if (this.outputChannel) {
       if (!cmd) {
         this.outputChannel.show();
+        this.consoleVisible = true;
       } else {
-        const win = await workspace.nvim.window;
-        if (workspace.nvim.call('win_gotoid', [win.id])) {
+        if (this.consoleVisible) {
           this.outputChannel.hide();
+          this.consoleVisible = false;
         } else {
+          const win = await workspace.nvim.window;
           await workspace.nvim.command(`${cmd} output:///${devLogName}`);
+          workspace.nvim.call('win_gotoid', [win.id]);
+          this.consoleVisible = true;
         }
       }
     }
