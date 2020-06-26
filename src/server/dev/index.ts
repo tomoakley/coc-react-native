@@ -104,14 +104,14 @@ class DevServer extends Dispose {
     // const cmd = config.get<string>('openDevLogSplitCommand', '');
     if (this.outputChannel) {
       const { nvim } = workspace;
+      const win = await nvim.window;
       if (this.consoleVisible) {
-        const win = await nvim.window;
-        nvim.call('win_gotoid', [win.id]);
-        nvim.command('hide');
+        await nvim.call('win_gotoid', [win.id]);
+        await nvim.command('hide');
         this.consoleVisible = false;
       } else {
-        this.outputChannel.show();
-        //await workspace.nvim.command(`botright sb output:///${devLogName}`);
+        await workspace.nvim.command(`botright sb output:///${devLogName}`);
+        await nvim.call('win_gotoid', [win.id]);
         this.consoleVisible = true;
       }
     }
