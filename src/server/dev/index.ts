@@ -100,22 +100,18 @@ class DevServer extends Dispose {
   }
 
   async openDevLog() {
-    const config = workspace.getConfiguration('react-native');
-    const cmd = config.get<string>('openDevLogSplitCommand', '');
+    //const config = workspace.getConfiguration('react-native');
+    // const cmd = config.get<string>('openDevLogSplitCommand', '');
     if (this.outputChannel) {
-      if (!cmd) {
-        this.outputChannel.show();
-        this.consoleVisible = true;
+      if (this.consoleVisible) {
+        this.outputChannel.hide();
+        this.consoleVisible = false;
       } else {
-        if (this.consoleVisible) {
-          this.outputChannel.hide();
-          this.consoleVisible = false;
-        } else {
-          const win = await workspace.nvim.window;
-          await workspace.nvim.command(`${cmd} output:///${devLogName}`);
-          workspace.nvim.call('win_gotoid', [win.id]);
-          this.consoleVisible = true;
-        }
+        this.outputChannel.show();
+        //const win = await workspace.nvim.window;
+        //await workspace.nvim.command(`botright sb output:///${devLogName}`);
+        //workspace.nvim.call('win_gotoid', [win.id]);
+        this.consoleVisible = true;
       }
     }
     setTimeout(() => {
