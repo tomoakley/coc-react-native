@@ -17,9 +17,11 @@ interface DCmd {
 }
 
 export const cmds: Record<string, DCmd> = {
-  hotReload: {
-    cmd: 'r',
-    desc: 'Reload',
+  stop: {
+    desc: 'Stop the React Native packager',
+    callback: () => {
+      devServer.stop();
+    },
   },
   toggleConsole: {
     desc: 'Hide / show the React Native console',
