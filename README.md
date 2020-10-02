@@ -27,9 +27,7 @@ Open React Native only commands list: `CocList --input=rn commands`
 ### Global Commands:
 - `rn.start`: (re)Start React Native packager.
 
-**Coming soon**
-Note: none of these exist yet. All are very likely to change/be removed.
-
+**Coming soon (may change)**
 - `rn.ios`: Build and run app for iOS
 - `rn.android`: Build and run app for Android
 - `rn.emulators`: List Android emulators
@@ -37,7 +35,7 @@ Note: none of these exist yet. All are very likely to change/be removed.
 ### Dev Server Commands:
 - `rn.dev.stop` Quit server
 
-**Coming soon**
+**Coming soon (may change)**
 > available when dev server running
 
 - `rn.dev.debug`: Toggle debug mode
