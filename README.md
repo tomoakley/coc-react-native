@@ -2,7 +2,7 @@
 
 React Native support for (neo)vim. The plan is to iteratively add features that are in [react-native-tools](https://github.com/Microsoft/vscode-react-native); the list below is a vague feature list in order of prioritisation (which will probably change).
 
-Disclaimer: I've never written a coc plugin before - I'm a React Native / TS / JS developer, and use vim (with coc) daily. I'm basically learning as I go. I just realised that there was no equivalent to react-native-tools for vim, so I'm scratching my own itch and doing it myself. Once I've figured out how to start the packager from within vim, I will integrate this into my .vimrc and dogfood it.
+Disclaimer: I've never written a coc plugin before - I'm a React Native / TS / JS developer, and use vim (with coc) daily. I'm basically learning as I go. I just realised that there was no equivalent to react-native-tools for vim, so I'm scratching my own itch and doing it myself.
 
 ## Features
 
@@ -24,19 +24,22 @@ WIP, not yet live on coc.
 
 Open React Native only commands list: `CocList --input=rn commands`
 
-**Global Commands**:
+### Global Commands:
+- `rn.start`: (re)Start React Native packager.
+
+**Coming soon**
 Note: none of these exist yet. All are very likely to change/be removed.
 
-- `rn.start`: Start React Native packager
 - `rn.ios`: Build and run app for iOS
 - `rn.android`: Build and run app for Android
 - `rn.emulators`: List Android emulators
 
-**Dev Server Commands**:
+### Dev Server Commands:
+- `rn.dev.stop` Quit server
 
+**Coming soon**
 > available when dev server running
 
-- `rn.dev.quit` Quit server
 - `rn.dev.debug`: Toggle debug mode
 - `rn.dev.reload`: Reload JS
 - `rn.dev.inspector`: Toggle inspector
