@@ -59,7 +59,8 @@ class DevServer extends Dispose {
 
   async stop(): Promise<boolean> {
     if (this.task && this.task.stdin.writable) {
-      this.task.stdin.write('stop\n');
+      this.task.stdin.write('^C\n');
+      this.task.kill();
       notification.show('React Native packager stopped.');
     }
     return Promise.resolve(true);
