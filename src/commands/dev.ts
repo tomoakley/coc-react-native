@@ -31,6 +31,22 @@ export const cmds: Record<string, DCmd> = {
       }
     },
   },
+  showDevMenu: {
+    desc: 'Show the developer menu',
+    callback: () => {
+      if (devServer.state) {
+        devServer.openDevLog();
+      }
+    },
+  },
+  reload: {
+    desc: 'Reload the app',
+    callback: () => {
+      if (devServer.state) {
+        devServer.reloadApp()
+      }
+    }
+  }
 };
 
 export class Dev extends Dispose {
