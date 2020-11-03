@@ -23,37 +23,6 @@ export const findWorkspaceFolders = async (cwd: string, patterns: string[]): Pro
   return paths.map(p => join(cwd, dirname(p)));
 };
 
-// source: https://github.com/microsoft/vscode-react-native/blob/d39cfa1afd49bf678332f100652806b19a8f640d/src/debugger/appWorker.ts#L66
-export const getNativeModules = () => {
-  let NativeModules;
-  try {
-    // This approach is for old RN versions
-    NativeModules = global.require('NativeModules');
-  } catch (err) {
-    // ignore error and try another way for more recent RN versions
-    try {
-      let nativeModuleId;
-      const modules = global.__r.getModules();
-      const ids = Object.keys(modules);
-      for (let i = 0; i < ids.length; i++) {
-        if (modules[ids[i]].verboseName) {
-          const packagePath = new String(modules[ids[i]].verboseName);
-          if (packagePath.indexOf('react-native/Libraries/BatchedBridge/NativeModules.js') > 0) {
-            nativeModuleId = parseInt(ids[i], 10);
-            break;
-          }
-        }
-      }
-      if (nativeModuleId) {
-        NativeModules = global.__r(nativeModuleId);
-      }
-    } catch (err) {
-      // suppress errors
-    }
-  }
-  return NativeModules;
-};
-
 export const closestPath = (paths: string[]): string | undefined => {
   if (paths.length) {
     return paths.slice().sort((a, b) => {
