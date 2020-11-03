@@ -126,7 +126,6 @@ class DevServer extends Dispose {
   async openDevMenu() {
     if (this.task && this.task.stdin.writable) {
       this.task.stdin.write('d\n');
-      this.task.kill();
       notification.show('Showing the developer menu...');
     }
     return Promise.resolve(true);
@@ -135,7 +134,6 @@ class DevServer extends Dispose {
   async reloadApp() {
     if (this.task && this.task.stdin.writable) {
       this.task.stdin.write('r\n');
-      this.task.kill();
       notification.show('Reloading the app...');
     }
     return Promise.resolve(true);

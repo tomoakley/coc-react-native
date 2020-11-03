@@ -43,10 +43,10 @@ export const cmds: Record<string, DCmd> = {
     desc: 'Reload the app',
     callback: () => {
       if (devServer.state) {
-        devServer.reloadApp()
+        devServer.reloadApp();
       }
-    }
-  }
+    },
+  },
 };
 
 export class Dev extends Dispose {
