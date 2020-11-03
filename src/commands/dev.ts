@@ -27,7 +27,7 @@ export const cmds: Record<string, DCmd> = {
     desc: 'Hide / show the React Native console',
     callback: () => {
       if (devServer.state) {
-        devServer.openDevLog();
+        devServer.toggleConsole();
       }
     },
   },
@@ -35,7 +35,7 @@ export const cmds: Record<string, DCmd> = {
     desc: 'Show the developer menu',
     callback: () => {
       if (devServer.state) {
-        devServer.openDevLog();
+        devServer.openDevMenu();
       }
     },
   },
